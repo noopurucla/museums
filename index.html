@@ -33,32 +33,32 @@
 </head>
 <body>
     <h1>Live List of Museums in Los Angeles</h1>
-    <div id="museum-list">Loading museums...</div>
+    <div id="museum-list">Loading exhibitions...</div>
 
     <script>
-        async function fetchMuseums() {
+        async function fetchExhibitions() {
             try {
-                let response = await fetch('https://data.lacity.org/resource/28qc-63jv.json');
+                let response = await fetch('https://la-museums-api.onrender.com/exhibitions'); // Replace with your deployed API URL
                 let data = await response.json();
-                displayMuseums(data);
+                displayExhibitions(data);
             } catch (error) {
                 document.getElementById("museum-list").innerHTML = "Failed to load data.";
-                console.error("Error fetching museum data:", error);
+                console.error("Error fetching exhibition data:", error);
             }
         }
 
-        function displayMuseums(museums) {
+        function displayExhibitions(exhibitions) {
             let museumList = document.getElementById("museum-list");
             museumList.innerHTML = "";
-            museums.forEach(museum => {
+            exhibitions.forEach(exhibit => {
                 let div = document.createElement("div");
                 div.classList.add("museum");
-                div.innerHTML = `<strong>${museum.name}</strong><br>${museum.address1 || 'Address not available'}<br><a href="${museum.website || '#'}" target="_blank">Visit Website</a>`;
+                div.innerHTML = `<strong>${exhibit.museum}</strong>: <a href="${exhibit.url}" target="_blank">${exhibit.title}</a>`;
                 museumList.appendChild(div);
             });
         }
 
-        fetchMuseums();
+        fetchExhibitions();
     </script>
 </body>
 </html>
