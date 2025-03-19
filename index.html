@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA Museums Live Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        #museum-list {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .museum {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .museum:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live List of Museums in Los Angeles</h1>
+    <div id="museum-list">Loading museums...</div>
+
+    <script>
+        async function fetchMuseums() {
+            try {
+                let response = await fetch('https://data.lacity.org/resource/28qc-63jv.json');
+                let data = await response.json();
+                displayMuseums(data);
+            } catch (error) {
+                document.getElementById("museum-list").innerHTML = "Failed to load data.";
+                console.error("Error fetching museum data:", error);
+            }
+        }
+
+        function displayMuseums(museums) {
+            let museumList = document.getElementById("museum-list");
+            museumList.innerHTML = "";
+            museums.forEach(museum => {
+                let div = document.createElement("div");
+                div.classList.add("museum");
+                div.innerHTML = `<strong>${museum.name}</strong><br>${museum.address1 || 'Address not available'}<br><a href="${museum.website || '#'}" target="_blank">Visit Website</a>`;
+                museumList.appendChild(div);
+            });
+        }
+
+        fetchMuseums();
+    </script>
+</body>
+</html>
