@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content=device-width, initial-scale=1.0">
     <title>LA Museums Live Data</title>
     <style>
         body {
@@ -38,11 +38,21 @@
     <script>
         async function fetchExhibitions() {
             try {
-                let response = await fetch('https://la-museums-api.onrender.com/exhibitions'); // Replace with your deployed API URL
+                let response = await fetch('https://la-museums-api.onrender.com/exhibitions', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
                 let data = await response.json();
                 displayExhibitions(data);
             } catch (error) {
-                document.getElementById("museum-list").innerHTML = "Failed to load data.";
+                document.getElementById("museum-list").innerHTML = "Failed to load data. Check console.";
                 console.error("Error fetching exhibition data:", error);
             }
         }
